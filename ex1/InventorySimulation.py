@@ -14,10 +14,14 @@ class InventorySimulation(Simulation):
         #statistics
         #costs
         self._order_costs = 0.
+        self._express_costs = 0.
 
         #areas
         self._ipos = 0.
         self._ineg = 0.
+
+        self._num_express_orders = 0
+        self._backlog_time = 0.
 
         #initialize events
         super().events.append(Event("eval",0))
@@ -40,7 +44,19 @@ class InventorySimulation(Simulation):
     
     @property
     def full_costs(self):
-        return self.order_cost + self.hold_costs + self.short_costs
+        return self.order_cost + self.hold_costs + self.short_costs + self.express_costs
+    
+    @property
+    def express_costs(self):
+        return self._express_costs / self._months
+    
+    @property
+    def backlog_time(self):
+        return self._backlog_time
+    
+    @property
+    def number_of_express_orders(self):
+        return self._num_express_orders
 
     def _order_arrival(self):
         elem = self._remove_current_event_from_list()
@@ -55,10 +71,17 @@ class InventorySimulation(Simulation):
     def _evaluate(self):
         self._remove_current_event_from_list()
 
-        if self._inv_lvl < self._small_s:
+        if self._inv_lvl < 0:
+            #express order
+            self._num_express_orders += 1
+            amount = self._big_s - self._inv_lvl
+            self._express_costs += 48 + 4 * amount
+            super().events.append(Arrival(amount,super().sim_time + random.uniform(0.25,0.5)))
+            pass
+        elif self._inv_lvl < self._small_s:
             amount = self._big_s - self._inv_lvl
             self._order_costs += 32 + 3 * amount
-            super().events.append(Arrival(amount,"arrival",super().sim_time + random.uniform(0.5,1)))
+            super().events.append(Arrival(amount,super().sim_time + random.uniform(0.5,1)))
 
         super().events.append(Event("eval",super().sim_time + 1))
 
@@ -70,6 +93,7 @@ class InventorySimulation(Simulation):
             self._ipos += self._inv_lvl * (super().sim_time - self._time_last_event)
         else:
             self._ineg += (-self._inv_lvl) * (super().sim_time - self._time_last_event)
+            self._backlog_time += super().sim_time - self._time_last_event
 
     def _timing(self):
         self._time_last_event = super().sim_time
