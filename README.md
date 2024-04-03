@@ -1,1 +1,5 @@
-# so-mini-proj1
+# Simulation mini project
+## Authors
+Pompeu Costa
+
+Rafael Pinto
