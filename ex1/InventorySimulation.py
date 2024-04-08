@@ -31,6 +31,10 @@ class InventorySimulation(Simulation):
         self._time_last_event : float = 0.
 
     @property
+    def policy(self):
+        return (self._small_s,self._big_s)
+
+    @property
     def order_cost(self):
         return self._order_costs / self._months
     
