@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 from SIR import SIR
+from RungeKuttaSIR import RungeKuttaSIR
 
-if __name__ == "__main__":
+def main():
     # TODO: ler valores da linha de comandos
-
     # valores completamente random
     # TODO: ver valores bons
     s0 = 5
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     delta_t = 1
     t_final = 5
 
-    sir = SIR(s0,i0,r0,beta,k,delta_t,t_final)
+    sir = RungeKuttaSIR(s0,i0,r0,beta,k,delta_t,t_final)
     sir.simulate()
 
     susceptible = sir.susceptible
@@ -30,3 +30,7 @@ if __name__ == "__main__":
     plt.title("SIR")
     plt.legend()
     plt.savefig("sir.png")
+
+if __name__ == "__main__":
+    main()
+    
