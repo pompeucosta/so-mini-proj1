@@ -3,7 +3,7 @@
 python main.py <file path>
 ```
 
-The file must have 7 float values in a line, separated by commas *,*
+The file must have 7 float values in a line, separated by commas
 
 For example:
 
