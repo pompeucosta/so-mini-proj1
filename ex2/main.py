@@ -5,7 +5,7 @@ from sys import argv
 
 def simulate(s0,i0,r0,beta,k,dt,tf,output_plt_file):
     # uncomment the line below to use the Forward Euler Method instead of the Runge Kutta and comment the RungKuttaSIR line
-    # sir = SIR(s0,i0,r0,beta,k,delta_t,t_final)
+    # sir = SIR(s0,i0,r0,beta,k,dt,tf)
     sir = RungeKuttaSIR(s0,i0,r0,beta,k,dt,tf)
     sir.simulate()
 
